@@ -4,7 +4,6 @@ import { deleteDeck } from "../utils/api";
 
 export const Card = ({ deck }) => {
     const cards = deck.cards;
-    console.log(cards)
     const history = useHistory();
 
     async function handleDelete(deck) {

@@ -3,27 +3,34 @@ import Header from "./Header";
 import NotFound from "./NotFound";
 import Home from "./Home";
 import Deck from "./Deck";
+import Study from "../Study/Study";
+import CreateCard from "../common/CreateCard";
+import EditCard from "../common/EditCard";
+import EditDeck from "../common/EditDeck";
 import { Switch, Route } from "react-router-dom";
-import CreateDeck from "./CreateDeck";
+import CreateDeck from "../common/CreateDeck";
 import { listDecks } from "../utils/api";
-import ErrorMessage from "../common/ErrorMessage";
-
 
 
 function Layout() {
 
   const [decks, setDecks] = useState([]);
-  const [error, setError] = useState(undefined);
 
-    useEffect (() => {
+  useEffect(() => {
+    async function fetchData() {
         const abortController = new AbortController();
-        listDecks(abortController.signal).then(setDecks).catch(setError);
-        return () => abortController.abort();
-    }, []);
-
-    if (error) {
-        return <ErrorMessage error={error} />
+        try {
+            const response = await listDecks(abortController.signal);
+            setDecks(response);
+        } catch (error) {
+            console.error("Something went wrong", error);
+        }
+        return () => {
+            abortController.abort();
+        };
     }
+    fetchData();
+}, []);
 
 
   return (
@@ -37,12 +44,26 @@ function Layout() {
               <Home decks={decks} />
             </Route> 
             <Route exact path={"/decks/new"}>
-              <CreateDeck />
+              <CreateDeck decks={decks}/>
             </Route>
             <Route exact path={"/decks/:deckId"}>
-              <Deck decks={decks} />
+              <Deck />
             </Route>
+            <Route exact path={"/decks/:deckId/study"}>
+              <Study />
+            </Route>
+            <Route exact path={"/decks/:deckId/cards/:cardId/edit"}>
+              <EditCard />
+            </Route>
+            <Route exact path={"/decks/:deckId/cards/new"}>
+              <CreateCard />
+            </Route>
+            <Route exact path={"/decks/:deckId/edit"}>
+              <EditDeck />
+            </Route>
+            <Route>
               <NotFound />
+              </Route>
           </Switch>
          </div>
       </div>

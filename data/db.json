@@ -9,13 +9,28 @@
       "name": "React Router",
       "description": "React Router is a collection of navigational components that compose declaratively with your application.",
       "id": 2
+    },
+    {
+      "name": "test deck",
+      "description": "this describes the test deck",
+      "id": 3
+    },
+    {
+      "name": "test",
+      "description": "testtesttest",
+      "id": 4
+    },
+    {
+      "name": "test test ",
+      "description": "test test test test test test test test test test ",
+      "id": 5
     }
   ],
   "cards": [
     {
       "id": 1,
-      "front": "Differentiate between Real DOM and Virtual DOM.",
-      "back": "Virtual DOM updates are faster but do not directly update the HTML",
+      "front": "Differentiate between Real DOM and Virtual DOM. ",
+      "back": "Virtual DOM updates are faster but do not directly update the HTML. ",
       "deckId": 1
     },
     {
@@ -41,13 +56,6 @@
       "back": "Renders the first matching child <Route> ",
       "deckId": 2,
       "id": 5
-    },
-    {
-      "cards": [],
-      "front": "b",
-      "back": "b",
-      "deckId": 1,
-      "id": 7
     }
   ]
 }
