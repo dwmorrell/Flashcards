@@ -1,15 +1,11 @@
 import { React, useState, useEffect } from "react";
-import { useParams, Link, useHistory } from "react-router-dom";
-import { readCard, readDeck, updateCard } from "../utils/api";
+import { useParams, Link } from "react-router-dom";
+import { readCard, readDeck } from "../utils/api";
+import CardForm from "./CardForm";
 
 
 function EditCard () {
 
-const initialDeckState = {
-    id: "",
-    name: "",
-    description: "",
-};
 const initialCardState = {
     id: "",
     front: "",
@@ -18,14 +14,12 @@ const initialCardState = {
 };
 
 const { deckId , cardId } = useParams();
-const history = useHistory();
-
-const [ deck, setDeck ] = useState(initialDeckState);
 const [ card, setCard ] = useState(initialCardState);
+const [ deck, setDeck ] = useState({})
 
 
 /* Fetches data from "readCard" and "readDeck" from utils/api passing "cardId" and "deckId"
-   Sets "deck" and "card" state from api response
+   Sets "card" and "deck" states from api response
 */
 useEffect(() => {
     async function fetchData() {
@@ -43,27 +37,7 @@ useEffect(() => {
         };
     }
     fetchData();
-}, [deckId, cardId]);
-
-//  Sets "card" state using input from forms
-function handleChange({ target }) {
-    setCard({
-        ...card,
-        [target.name]: target.value,
-    });
-}
-
-/* Handles submit button click
-   updates "card" in deck/cards database using "updateCard" function from utils/api passing in "card" state
-   Returns user to /decks/:deckId path when complete
-*/
-async function handleSubmit(event) {
-    event.preventDefault();
-    const abortController = new AbortController();
-    const response = await updateCard({ ...card }, abortController.signal);
-    history.push(`/decks/${deckId}`);
-    return response;
-}
+}, [cardId, deckId]);
 
     return (
         <div className="col">
@@ -83,40 +57,8 @@ async function handleSubmit(event) {
             <div>
                 <h3>Edit Card</h3>
             </div>
-            <div className="card">
-                <div className="card-body">
-                    <form >
-                        <div className="form-group">   
-                            <label>Front:</label>
-                            <textarea
-                                className="form-control"
-                                id="name"
-                                type="textarea"
-                                name="front"
-                                rows="4"
-                                placeholder={card.front}
-                                onChange={handleChange}
-                                value={card.front}
-                            />
-                            
-                        </div>
-                        <div className="form-group">
-                            <label>Back:</label>
-                            <textarea
-                                className="form-control"
-                                id="name"
-                                type="textarea"
-                                name="back"
-                                rows="4"
-                                placeholder={card.back}
-                                onChange={handleChange}
-                                value={card.back}
-                            />
-                        </div>
-                        <Link to={`/decks/${deckId}`}><button type="button" className="btn btn-secondary">Cancel</button></Link>
-                        <button className="btn btn-primary" type="submit" onClick={handleSubmit}>Submit</button>
-                    </form>
-                </div>
+            <div>
+                <CardForm card={card} />
             </div>
         </div>
     )
