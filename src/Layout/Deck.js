@@ -17,6 +17,9 @@ export const Deck = () => {
       const { deckId } = useParams();
       const history = useHistory();
       
+       /* Fetches data from "readDeck" from utils/api passing in "deckId"
+          Sets "deck" and "card" states from api response
+       */
       useEffect(() => {
         async function fetchData() {
             const abortController = new AbortController();
@@ -35,6 +38,10 @@ export const Deck = () => {
         fetchData();
     }, [deckId]);
 
+    /* Handles the delete function when the delete button is clicked
+       Calls "deleteDeck" from utils/api to remove deck from database
+       Returns user to home when confirmed
+    */
     async function handleDeleteDeck(deck) {
         if (window.confirm(`Delete this deck? You will not be able to recover it.`)) {
             history.push("/");
@@ -42,6 +49,7 @@ export const Deck = () => {
         }
     }
 
+    // Calls "CardList" component to display all cards in deck
     const list = cards.map((card) => {
         return (
       <CardList key={card.id} card={card} deck={deck}/>

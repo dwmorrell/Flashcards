@@ -16,6 +16,10 @@ function Layout() {
 
   const [decks, setDecks] = useState([]);
 
+  /* Fetches data from "listDeck" from utils/api
+     Sets "deck" state from api response
+     Deck then gets passed to "Home" component
+  */
   useEffect(() => {
     async function fetchData() {
         const abortController = new AbortController();

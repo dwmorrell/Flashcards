@@ -24,7 +24,9 @@ const [ deck, setDeck ] = useState(initialDeckState);
 const [ card, setCard ] = useState(initialCardState);
 
 
-
+/* Fetches data from "readCard" and "readDeck" from utils/api passing "cardId" and "deckId"
+   Sets "deck" and "card" state from api response
+*/
 useEffect(() => {
     async function fetchData() {
         const abortController = new AbortController();
@@ -43,6 +45,7 @@ useEffect(() => {
     fetchData();
 }, [deckId, cardId]);
 
+//  Sets "card" state using input from forms
 function handleChange({ target }) {
     setCard({
         ...card,
@@ -50,6 +53,10 @@ function handleChange({ target }) {
     });
 }
 
+/* Handles submit button click
+   updates "card" in deck/cards database using "updateCard" function from utils/api passing in "card" state
+   Returns user to /decks/:deckId path when complete
+*/
 async function handleSubmit(event) {
     event.preventDefault();
     const abortController = new AbortController();

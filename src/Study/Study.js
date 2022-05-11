@@ -18,6 +18,7 @@ export const Study = () => {
     const [ flip, setFlip ] = useState(true);
     const history = useHistory();
     
+    // Fetches readDeck data from utils/api and sets state for cards and deck
     useEffect(() => { 
         async function fetchData() {
             
@@ -36,10 +37,14 @@ export const Study = () => {
         fetchData();
     }, [deckId]);
 
+    // This function handles the setting of the flip state
     function handleFlip () {
         setFlip(!flip);
     }
 
+    /* This function displays the next button after a card has been flipped, 
+       then calls the nextCard function to set the appropriate states.
+    */
     function showNextButton(cards, card) {
         if (flip) {
             return null;
@@ -52,6 +57,10 @@ export const Study = () => {
         }
     }
 
+    /* Is called by the "showNextButton" function to set state of "card" and "flip" depending on the index of the current card
+       If the index of the card is at the end, this calls a window to pop-up to 
+       prompt user to restart the cards from the start or return to home page.
+    */
     function nextCard(card, total) {
         if (card < total) {
             setCard(card);
@@ -82,6 +91,7 @@ export const Study = () => {
                         </li>
                     </ol>
                 </nav>
+                {/* If the number of cards in the deck is three or greater, display the cards */}
                     {deck?.cards?.length >= 3 
                         ?(
                             <>
@@ -97,6 +107,7 @@ export const Study = () => {
                             </>
                         )
                         :(
+                    // If the number of cards in the deck is less than three, displays "NotEnoughCards" component
                         <div>   
                             <NotEnoughCards deck={deck} />
                         </div>

@@ -14,6 +14,9 @@ function EditDeck () {
     const history = useHistory();
     const [editDeck, setEditDeck ] = useState(initialState);
 
+    /* Fetches data from "readDeck" from utils/api passing in "deckId"
+       Sets "editDeck" state from api response
+    */
     useEffect(() => {
         async function fetchData() {
             const abortController = new AbortController();
@@ -30,6 +33,10 @@ function EditDeck () {
         fetchData();
     }, [deckId]);
 
+    /* Handles submit button click
+       updates "deck" in decks database using "updateDeck" function from utils/api passing in "editDeck" state
+       Returns user to /deck/:deckId path when complete
+    */  
     async function handleSubmit(event) {
         event.preventDefault();
         const abortController = new AbortController();
@@ -38,6 +45,7 @@ function EditDeck () {
         return response;
     }
 
+    //  Sets "editDeck" state using input from forms
     const handleChange = (event) => {
         setEditDeck({...editDeck,
         [event.target.name]: event.target.value});

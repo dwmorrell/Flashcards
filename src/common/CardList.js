@@ -6,6 +6,10 @@ function CardList ({ card }) {
     const history = useHistory();
     const { url } = useRouteMatch();
 
+    /* Handles the delete function when the delete button is clicked
+       Calls "deleteCard" from utils/api to remove card from database / deck
+       Returns user to home when confirmed
+    */
     async function handleDelete(card) {
         if (window.confirm(`Delete this Card? You will not be able to recover it.`)) {
             history.go(0);

@@ -13,6 +13,10 @@ function CreateDeck () {
     const history = useHistory();
     const [newDeck, setNewDeck] = useState(initialState);
 
+    /* Handles sumbit button
+       Creates deck using "createDeck" function in utils/api passing "newDeck" state
+       Sends user to new /decks/:deckId path when submitted
+    */
     async function handleSubmit(event) {
         event.preventDefault();
         const abortController = new AbortController();
@@ -22,6 +26,7 @@ function CreateDeck () {
         return response;
     }
 
+    //  Sets "newDeck" state using input from forms 
     const handleChange = (event) => {
         setNewDeck({...newDeck,
         [event.target.name]: event.target.value});

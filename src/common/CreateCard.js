@@ -21,6 +21,8 @@ function CreateCard () {
     const [ deck, setDeck ] = useState(initialDeckState);
     const [ card, setCard ] = useState(initialCardState);
 
+
+    // Fetches readDeck data from utils/api using "deckId" and sets state for "deck"
     useEffect(() => {
         async function fetchData() {
             const abortController = new AbortController();
@@ -37,6 +39,7 @@ function CreateCard () {
         fetchData();
     }, [deckId]);
 
+    //  Sets card data using input from forms
     function handleChange({ target }) {
         setCard({
             ...card,
@@ -44,6 +47,10 @@ function CreateCard () {
         });
     }
 
+    /* Handles submitting the new card to the deck using "deckId" and "card" data.
+       Calls the createCard function from utils/api
+       Returns user to /decks/:deckId route when done
+    */
     async function handleSubmit(event) {
         event.preventDefault();
         const abortController = new AbortController();
