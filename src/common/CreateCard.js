@@ -25,10 +25,7 @@ function CreateCard () {
         async function fetchData() {
             const abortController = new AbortController();
             try { 
-                const deckResponse = await readDeck(
-                    deckId,
-                    abortController.signal
-                );
+                const deckResponse = await readDeck(deckId, abortController.signal);
                 setDeck(deckResponse);
             } catch (error) {
                 console.error("Something went wrong", error);
@@ -38,7 +35,7 @@ function CreateCard () {
             };
         }
         fetchData();
-    }, []);
+    }, [deckId]);
 
     function handleChange({ target }) {
         setCard({

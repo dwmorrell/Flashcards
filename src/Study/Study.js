@@ -13,18 +13,19 @@ export const Study = () => {
 
     const { deckId } = useParams();
     const [ card, setCard ] = useState(0);
+    const [ cards, setCards ] = useState([])
     const [ deck, setDeck ] = useState(initialState);
     const [ flip, setFlip ] = useState(true);
-    console.log("hello")
-    useEffect(() => {
-        
+    const history = useHistory();
+    
+    useEffect(() => { 
         async function fetchData() {
+            
             const abortController = new AbortController();
             try {
-                console.log(deckId, card, deck)
                 const response = await readDeck(deckId, abortController.signal);
-                console.log(response)
-                setDeck(response);         
+                setDeck(response);  
+                setCards(response.cards);       
             } catch (error) {
                 console.error("Something went wrong", error);
             }
@@ -33,21 +34,35 @@ export const Study = () => {
             };
         }
         fetchData();
-    }, []);
-
-    console.log("deck=", deck)
+    }, [deckId]);
 
     function handleFlip () {
         setFlip(!flip);
     }
 
-    function handleNext() {
-        setFlip(true)
-        if (card === deck.cards.length -1){
-            window.confirm("Click OK to restart the deck.") 
-            ? setCard(() => 0) : useHistory.push("/")
-        } else{
-            setCard((card) => card +1)
+    function showNextButton(cards, card) {
+        if (flip) {
+            return null;
+        } else {
+            return (
+                <button onClick={() => nextCard(card + 1, cards.length)} className="btn btn-primary mx-1">
+                 Next
+                </button>
+            );
+        }
+    }
+
+    function nextCard(card, total) {
+        if (card < total) {
+            setCard(card);
+            setFlip(true);
+        } else {
+            if (window.confirm(`Restart cards? Click 'cancel' to return to the home page`)) {
+                setCard(0);
+                setFlip(true);
+            } else {
+                history.push("/");
+            }
         }
     }
 
@@ -59,29 +74,37 @@ export const Study = () => {
                         <li className='breadcrumb-item'>
                             <Link to='/'> Home</Link>
                         </li>
+                        <li className="breadcrumb-item">
+                            <Link to={`/decks/${deckId}`}>{deck.name}</Link>
+                        </li>
                         <li className='breadcrumb-item active' aria-current='page'>
-                            {deck.name}
+                            Study
                         </li>
                     </ol>
                 </nav>
-                    {deck?.cards?.length < 3 &&
-                    <div>
-                        <NotEnoughCards deck={deck} />
-                    </div>
-                    }
-                <h4>{deck.name}</h4>
-                <div className="card" style="width: 20rem;">
-                    <div className="card-body">
-                        <h6 className="card-title mb-2">Card {card +1} of {deck.cards.length}</h6>
-                        <p className="card-text">{flip ? deck.cards[card].front : deck.cards[card].back}</p>                        
-                        <button type="button" className="btn btn-secondary" onClick={()=> handleFlip()}>Flip</button>
-                        {!flip ? <button className="btn btn-primary" onClick={handleNext()}>Next</button>: null}
-                    </div>
-                </div>
+                    {deck?.cards?.length >= 3 
+                        ?(
+                            <>
+                                <h4>{deck.name}: Study</h4>
+                                <div className="card">
+                                    <div className="card-body">
+                                        <h6 className="card-title mb-2">Card {card +1} of {deck?.cards?.length}</h6>
+                                        <p className="card-text">{flip ? deck?.cards[card]?.front : deck?.cards[card]?.back}</p>                        
+                                        <button type="button" className="btn btn-secondary" onClick={()=> handleFlip()}>Flip</button>
+                                        {showNextButton(cards, card)}
+                                    </div>
+                                </div> 
+                            </>
+                        )
+                        :(
+                        <div>   
+                            <NotEnoughCards deck={deck} />
+                        </div>
+                        )
+                    }                   
             </div>
         </main>
-    )
-    
+    )  
 }
 
 export default Study;

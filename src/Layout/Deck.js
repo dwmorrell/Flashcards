@@ -33,7 +33,7 @@ export const Deck = () => {
             };
         }
         fetchData();
-    }, []);
+    }, [deckId]);
 
     async function handleDeleteDeck(deck) {
         if (window.confirm(`Delete this deck? You will not be able to recover it.`)) {

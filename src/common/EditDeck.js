@@ -12,7 +12,6 @@ function EditDeck () {
     }
 
     const history = useHistory();
-    const [deck, setDeck] = useState(initialState);
     const [editDeck, setEditDeck ] = useState(initialState);
 
     useEffect(() => {
@@ -29,18 +28,18 @@ function EditDeck () {
             };
         }
         fetchData();
-    }, []);
+    }, [deckId]);
 
     async function handleSubmit(event) {
         event.preventDefault();
         const abortController = new AbortController();
-        const response = await updateDeck({...deck}, abortController.signal);
+        const response = await updateDeck({...editDeck}, abortController.signal);
         history.go(0);
         return response;
     }
 
     const handleChange = (event) => {
-        setDeck({...deck,
+        setEditDeck({...editDeck,
         [event.target.name]: event.target.value});
     }
 
@@ -51,31 +50,30 @@ function EditDeck () {
                     <li className='breadcrumb-item'>
                         <Link to='/'> Home</Link>
                     </li>
-                    <li className='breadcrumb-tiem'>
+                    <li className='breadcrumb-item'>
                         <Link to={`/decks/${deckId}`}>{editDeck.name}</Link>
                     </li>
                     <li className='breadcrumb-item active' aria-current='page'>
-                        Create Deck
+                        Edit Deck
                     </li>
                 </ol>
             </nav>
             <div>
-                <h3>Create Deck</h3>
+                <h3>{editDeck.name}: Edit Deck</h3>
             </div>
             <div className="card">
                 <div className="card-body">
                     <form>
                         <div className="form-group">
                             <label>Name:</label>
-                            <textarea
+                            <input
                                 className="form-control"
                                 id="name"
-                                type="textarea"
+                                type="input"
                                 name="name"
-                                rows="1"
                                 placeholder={editDeck.name}
                                 onChange={handleChange}
-                                value={deck.name}
+                                value={editDeck.name}
                             />
                         </div>
                         <div className="form-group">
@@ -88,7 +86,7 @@ function EditDeck () {
                                 rows="4"
                                 placeholder={editDeck.description}
                                 onChange={handleChange}
-                                value={deck.description}
+                                value={editDeck.description}
                             />
                         </div>
                         <Link to="/"><button type="button" className="btn btn-secondary">Cancel</button></Link>

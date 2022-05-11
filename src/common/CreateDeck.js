@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useHistory, Link } from "react-router-dom";
 import { createDeck } from "../utils/api";
 
-function CreateDeck ({ decks }) {
+function CreateDeck () {
 
     const initialState = {
         name: "",
@@ -49,12 +49,11 @@ function CreateDeck ({ decks }) {
                     <form>
                         <div className="form-group">
                             <label>Name:</label>
-                            <textarea
+                            <input
                                 className="form-control"
                                 id="name"
-                                type="textarea"
+                                type="input"
                                 name="name"
-                                rows="1"
                                 placeholder="Deck Name"
                                 onChange={handleChange}
                                 value={newDeck.name}

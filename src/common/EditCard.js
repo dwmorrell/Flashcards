@@ -29,14 +29,8 @@ useEffect(() => {
     async function fetchData() {
         const abortController = new AbortController();
         try {
-            const cardResponse = await readCard(
-                cardId,
-                abortController.signal
-            );
-            const deckResponse = await readDeck(
-                deckId,
-                abortController.signal
-            );
+            const cardResponse = await readCard(cardId, abortController.signal);
+            const deckResponse = await readDeck(deckId, abortController.signal);
             setCard(cardResponse);
             setDeck(deckResponse);
         } catch (error) {
@@ -47,7 +41,7 @@ useEffect(() => {
         };
     }
     fetchData();
-}, []);
+}, [deckId, cardId]);
 
 function handleChange({ target }) {
     setCard({

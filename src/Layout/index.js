@@ -44,7 +44,7 @@ function Layout() {
               <Home decks={decks} />
             </Route> 
             <Route exact path={"/decks/new"}>
-              <CreateDeck decks={decks}/>
+              <CreateDeck />
             </Route>
             <Route exact path={"/decks/:deckId"}>
               <Deck />
